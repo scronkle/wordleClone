@@ -1,0 +1,25 @@
+#gameBoard {
+  width: 500px;
+  height: 600px;
+  background-color: darkslategrey;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.tile {
+  width: 20%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  background-color: darkslategray;
+  border: 4px solid lightgray;
+  border-radius: 4px;
+}
