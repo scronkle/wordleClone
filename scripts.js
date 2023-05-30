@@ -9,7 +9,7 @@ import {wordList} from './utils.js';
 const localList = ['brain', 'great', 'booty', 'sewer']
 
 function wordSelector() {
-  return localList[Math.floor(Math.random() * localList.length)]
+  return wordList[Math.floor(Math.random() * wordList.length)].word
 }
 
 function getUserGuess() {
