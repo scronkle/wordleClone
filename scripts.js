@@ -1,5 +1,4 @@
-//html import
-//import { wordList } from "./utils.js";
+import {wordList} from './utils.js';
 
 
 //node.js import
@@ -122,3 +121,6 @@ let guessCount = 0
 
 
 document.getElementById('submitButton').addEventListener("click", userGuesses)
+
+
+console.log(wordList)
