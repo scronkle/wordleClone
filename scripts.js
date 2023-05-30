@@ -121,6 +121,3 @@ let guessCount = 0
 
 
 document.getElementById('submitButton').addEventListener("click", userGuesses)
-
-
-console.log(wordList)
