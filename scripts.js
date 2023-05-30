@@ -77,19 +77,35 @@ function updateBoard(stateArray, guessNum) {
   document.getElementById(lineNum).querySelector('.columnFour').style.backgroundColor = colourDecode(stateArray[3])
   document.getElementById(lineNum).querySelector('.columnFive').style.backgroundColor = colourDecode(stateArray[4])
   //set text
-  document.getElementById(lineNum).querySelector('.columnOne').innerHTML = getUserGuess()[0]
-  document.getElementById(lineNum).querySelector('.columnTwo').innerHTML = getUserGuess()[1]
-  document.getElementById(lineNum).querySelector('.columnThree').innerHTML = getUserGuess()[2]
-  document.getElementById(lineNum).querySelector('.columnFour').innerHTML = getUserGuess()[3]
-  document.getElementById(lineNum).querySelector('.columnFive').innerHTML = getUserGuess()[4]
+  document.getElementById(lineNum).querySelector('.columnOne').innerHTML = getUserGuess()[0].toUpperCase()
+  document.getElementById(lineNum).querySelector('.columnTwo').innerHTML = getUserGuess()[1].toUpperCase()
+  document.getElementById(lineNum).querySelector('.columnThree').innerHTML = getUserGuess()[2].toUpperCase()
+  document.getElementById(lineNum).querySelector('.columnFour').innerHTML = getUserGuess()[3].toUpperCase()
+  document.getElementById(lineNum).querySelector('.columnFive').innerHTML = getUserGuess()[4].toUpperCase()
+}
+
+function guessValidity(string) {
+  if (string.length == 5) {
+    if (wordList.some(e => e.word == string)) {
+      return true
+    } else {
+      return 'Not in word list :('
+    }
+  } else {
+    return '5 letters only!'
+  }
 }
 
 function userGuesses() {
-  let string = getUserGuess()
-  updateBoard(checkGuess(string, target), guessCount)
-  guessCount++
-  document.getElementById('guessBox').value = ''
-  winLossCheck(string, target)
+  if (guessValidity(getUserGuess()) == true) {
+    let string = getUserGuess()
+    updateBoard(checkGuess(string, target), guessCount)
+    guessCount++
+    document.getElementById('guessBox').value = ''
+    winLossCheck(string, target)
+} else {
+  window.alert('Must enter valid word. ' + guessValidity(getUserGuess()))
+}
 }
 
 function winLossCheck(winCheckGuess, winCheckTarget) {
@@ -108,16 +124,22 @@ function winLossCheck(winCheckGuess, winCheckTarget) {
 
 function winStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'green'
+  document.getElementById('submitButton').removeEventListener('click', userGuesses)
 }
 
 function loseStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'red'
+  document.getElementById('submitButton').removeEventListener('click', userGuesses)
 }
-
 
 let target = wordSelector()
 let guessCount = 0
 
+function initialise() {
+  let target = wordSelector()
+  let guessCount = 0
+}
 
 
 document.getElementById('submitButton').addEventListener("click", userGuesses)
+initialise()
