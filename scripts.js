@@ -14,15 +14,17 @@ function wordSelector() {
 
 function getUserGuess() {
   //figure out how to get guess lmao
-  return document.getElementById('guessBox').value
+  //return document.getElementById('guessBox').value
+  return guessString.join('')
 }
 
 function checkGuess(guess, target) {
   const checkStates = [0, 0, 0, 0, 0]
-  for (let i = 0; i < guess.length; i++) {
-    if (guess[i] == target[i]) {
+  const checkGuessArray = guess.toLowerCase()
+  for (let i = 0; i < checkGuessArray.length; i++) {
+    if (checkGuessArray[i] == target[i]) {
       checkStates[i] = 2;
-    } else if (target.includes(guess[i])) {
+    } else if (target.includes(checkGuessArray[i])) {
       checkStates[i] = 1;
     }
   }
@@ -97,12 +99,12 @@ function guessValidity(string) {
 }
 
 function userGuesses() {
-  if (guessValidity(getUserGuess()) == true) {
+  if (guessValidity(getUserGuess().toLowerCase()) == true) {
     let string = getUserGuess()
     updateBoard(checkGuess(string, target), guessCount)
     guessCount++
-    document.getElementById('guessBox').value = ''
     winLossCheck(string, target)
+    guessString = []
 } else {
   window.alert('Must enter valid word. ' + guessValidity(getUserGuess()))
 }
@@ -110,7 +112,7 @@ function userGuesses() {
 
 function winLossCheck(winCheckGuess, winCheckTarget) {
   if (guessCount < 6) {
-    if (winCheckGuess == winCheckTarget) {
+    if (winCheckGuess.toLowerCase() == winCheckTarget) {
       winStateReached()
     }
   } else {
@@ -122,24 +124,166 @@ function winLossCheck(winCheckGuess, winCheckTarget) {
   }
 }
 
+function stageUpdateBoard(array) {
+  let targetRow = ''
+  let targetColumn = '.columnOne'
+  switch (guessCount) {
+    case 0:
+      targetRow = "lineOne";
+      break;
+    case 1:
+      targetRow = "lineTwo";
+      break;
+    case 2:
+      targetRow = 'lineThree'
+      break;
+    case 3: 
+      targetRow = 'lineFour'
+      break;
+    case 4:
+      targetRow = "lineFive";
+      break;
+    case 5:
+      targetRow = "lineSix";
+      break;
+  }
+  switch (guessString.length) {
+    case 1:
+      targetColumn = ".columnOne";
+      break;
+    case 2:
+      targetColumn = ".columnTwo";
+      break;
+    case 3:
+      targetColumn = ".columnThree";
+      break;
+    case 4:
+      targetColumn = ".columnFour";
+      break;
+    case 5:
+      targetColumn = ".columnFive";
+      break;
+  }
+
+  //update tile
+  document.getElementById(targetRow).querySelector(targetColumn).innerHTML = guessString[guessString.length - 1]
+}
+
+function keyPress() {
+  let keyChar = this.innerHTML
+  if (guessString.length < 5) {
+    guessString.push(keyChar)
+    stageUpdateBoard(guessString)
+  }
+  //remove later
+  console.log(guessString)
+}
+
+function createKey(key, row) {
+  let newKey = document.createElement('p')
+  newKey.classList.add('key')
+  document.getElementById(row).appendChild(newKey)
+  newKey.innerHTML = key.toUpperCase()
+  newKey.addEventListener('click', keyPress)
+}
+
+function buildKeyboard() {
+  //making latters
+  const keysRowOne = 'qwertyuiop'
+  const keysRowTwo = 'asdfghjkl'
+  const keysRowThree = 'zxcvbnm'
+  for (let i = 0; i < keysRowOne.length; i++) {
+    createKey(keysRowOne[i], 'keyboardRowOne')
+  }
+  for (let i = 0; i < keysRowTwo.length; i++) {
+    createKey(keysRowTwo[i], 'keyboardRowTwo')
+  }
+  for (let i = 0; i < keysRowThree.length; i++) {
+    createKey(keysRowThree[i], 'keyboardRowThree')
+  }
+  //make backspace
+  let backspace = document.createElement('p')
+  backspace.classList.add('key')
+  backspace.innerHTML = '<-'
+  document.getElementById('keyboardRowOne').appendChild(backspace)
+  backspace.addEventListener('click', backspacePress)
+  //make enter
+  let enter = document.createElement('p')
+  enter.classList.add('key')
+  enter.id = 'submitButton'
+  enter.innerHTML = 'ENTER'
+  document.getElementById('keyboardRowOne').appendChild(enter)
+  enter.addEventListener('click', enterPress)
+}
+
+function backspacePress() {
+  guessString.pop()
+  let backspaceTarget = 0
+  let targetRow = 0
+  switch (guessString.length + 1) {
+    case 1:
+      backspaceTarget = ".columnOne";
+      break;
+    case 2:
+      backspaceTarget = ".columnTwo";
+      break;
+    case 3:
+      backspaceTarget = ".columnThree";
+      break;
+    case 4:
+      backspaceTarget = ".columnFour";
+      break;
+    case 5:
+      backspaceTarget = ".columnFive";
+      break;
+  }
+  switch (guessCount) {
+    case 0:
+      targetRow = "lineOne";
+      break;
+    case 1:
+      targetRow = "lineTwo";
+      break;
+    case 2:
+      targetRow = 'lineThree'
+      break;
+    case 3: 
+      targetRow = 'lineFour'
+      break;
+    case 4:
+      targetRow = "lineFive";
+      break;
+    case 5:
+      targetRow = "lineSix";
+      break;
+  }
+  document.getElementById(targetRow).querySelector(backspaceTarget).innerHTML = ""
+}
+
+function enterPress() {
+  console.log('NO! :(')
+  userGuesses()
+}
+
 function winStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'green'
-  document.getElementById('submitButton').removeEventListener('click', userGuesses)
+  document.getElementById('submitButton').removeEventListener('click', enterPress)
 }
 
 function loseStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'red'
-  document.getElementById('submitButton').removeEventListener('click', userGuesses)
+  document.getElementById('submitButton').removeEventListener('click', enterPress)
 }
 
 let target = wordSelector()
 let guessCount = 0
+let guessString = []
 
 function initialise() {
   let target = wordSelector()
   let guessCount = 0
+  buildKeyboard()
 }
 
 
-document.getElementById('submitButton').addEventListener("click", userGuesses)
 initialise()
