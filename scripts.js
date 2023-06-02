@@ -104,6 +104,7 @@ function userGuesses() {
     updateBoard(checkGuess(string, target), guessCount)
     guessCount++
     winLossCheck(string, target)
+
     guessString = []
 } else {
   window.alert('Must enter valid word. ' + guessValidity(getUserGuess()))
@@ -116,7 +117,7 @@ function winLossCheck(winCheckGuess, winCheckTarget) {
       winStateReached()
     }
   } else {
-    if (winCheckGuess == winCheckTarget) {
+    if (winCheckGuess.toLowerCase() == winCheckTarget) {
       winStateReached()
     } else {
       loseStateReached()
@@ -125,7 +126,7 @@ function winLossCheck(winCheckGuess, winCheckTarget) {
 }
 
 function stageUpdateBoard(array) {
-  let targetRow = ''
+  let targetRow = 'lineOne'
   let targetColumn = '.columnOne'
   switch (guessCount) {
     case 0:
@@ -170,10 +171,12 @@ function stageUpdateBoard(array) {
 }
 
 function keyPress() {
-  let keyChar = this.innerHTML
-  if (guessString.length < 5) {
-    guessString.push(keyChar)
-    stageUpdateBoard(guessString)
+  if (gameIsActive) {
+    let keyChar = this.innerHTML
+    if (guessString.length < 5) {
+      guessString.push(keyChar)
+      stageUpdateBoard(guessString)
+    }
   }
   //remove later
   console.log(guessString)
@@ -204,6 +207,7 @@ function buildKeyboard() {
   //make backspace
   let backspace = document.createElement('p')
   backspace.classList.add('key')
+  backspace.id = 'backspace'
   backspace.innerHTML = '<-'
   document.getElementById('keyboardRowOne').appendChild(backspace)
   backspace.addEventListener('click', backspacePress)
@@ -212,7 +216,7 @@ function buildKeyboard() {
   enter.classList.add('key')
   enter.id = 'submitButton'
   enter.innerHTML = 'ENTER'
-  document.getElementById('keyboardRowOne').appendChild(enter)
+  document.getElementById('keyboardRowTwo').appendChild(enter)
   enter.addEventListener('click', enterPress)
 }
 
@@ -261,28 +265,80 @@ function backspacePress() {
 }
 
 function enterPress() {
-  console.log('NO! :(')
-  userGuesses()
+  if (gameIsActive) {
+    userGuesses()
+  } else {
+    resetGame()
+  }
 }
 
 function winStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'green'
-  document.getElementById('submitButton').removeEventListener('click', enterPress)
+  document.getElementById('gameBoard').style.filter = "drop-shadow(0px 0px 20px green)"
+  document.getElementById('backspace').removeEventListener('click', backspacePress)
+  gameIsActive = false
+
 }
 
 function loseStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'red'
-  document.getElementById('submitButton').removeEventListener('click', enterPress)
+  document.getElementById('gameBoard').style.filter = "drop-shadow(0px 0px 20px red)"
+  document.getElementById('backspace').removeEventListener('click', backspacePress)
+  gameIsActive = false
+}
+
+function resetGame() {
+  target = wordSelector()
+  guessCount = 0
+  gameIsActive = true
+  clearBoard()
+}
+
+function clearBoard() {
+  let tiles = document.getElementsByClassName('tile')
+  for (let i=0; i < tiles.length; i++) {
+    document.getElementsByClassName('tile')[i].style.backgroundColor = ''
+    document.getElementsByClassName('tile')[i].innerHTML = ''
+  }
+  document.getElementById('gameBoard').style.backgroundColor = ''
+  document.getElementById('gameBoard').style.filter = ""
 }
 
 let target = wordSelector()
 let guessCount = 0
 let guessString = []
+let gameIsActive = false
+
+function keyboardPress(key) {
+  console.log(key.key)
+  let alphabet = 'abcdefghijklmnopqrstuvwxyz'
+  if (key.key == 'Enter') {
+    enterPress()
+  }
+  if (gameIsActive) {
+    if (key.key == 'Backspace') {
+      backspacePress()
+    } else {
+        if (guessString.length < 5) {
+        if (alphabet.includes(key.key)) {
+        guessString.push(key.key.toUpperCase())
+          stageUpdateBoard(guessString)
+        }
+      }
+    }
+  }
+   //remove later
+  console.log(guessString)
+  console.log(gameIsActive)
+}
+
+document.addEventListener('keydown', keyboardPress)
 
 function initialise() {
   let target = wordSelector()
   let guessCount = 0
   buildKeyboard()
+  gameIsActive = true
 }
 
 
