@@ -142,6 +142,26 @@ header div p {
 
 }
 
+
+
+.yellowKey {
+  background-color: yellow;
+  border-color: yellow;
+
+}
+
+.greyKey {
+  background-color: gray;
+  border-color: gray;
+  text-shadow: 0px 0px 10px black;
+}
+
+.greenKey {
+  background-color: green;
+  border-color: green;
+  text-shadow: 0px 0px 10px black;
+}
+
 .key #submitButton {
   width: 90px;
 }

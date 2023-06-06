@@ -24,14 +24,20 @@ function checkGuess(guess, target) {
   for (let i = 0; i < checkGuessArray.length; i++) {
     if (checkGuessArray[i] == target[i]) {
       checkStates[i] = 2;
+      document.getElementById(checkGuessArray[i]).classList.add('greenKey')
     } else if (target.includes(checkGuessArray[i])) {
       checkStates[i] = 1;
+      document.getElementById(checkGuessArray[i]).classList.add('yellowKey')
+    } else {
+      document.getElementById(checkGuessArray[i]).classList.add('greyKey')
     }
   }
   console.log(target + guess)
   console.log(checkStates)
   return checkStates
 }
+
+
 
 function colourDecode(colour) {
   switch (colour) {
@@ -195,6 +201,7 @@ function createKey(key, row) {
   document.getElementById(row).appendChild(newKey)
   newKey.innerHTML = key.toUpperCase()
   newKey.addEventListener('click', keyPress)
+  newKey.id = key
 }
 
 function buildKeyboard() {
@@ -310,6 +317,9 @@ function resetGame() {
   document.getElementById('streakCounter').innerHTML = streak
   document.getElementById('avgGuessCounter').innerHTML = Math.floor(avgGuessCount*10)/10
   document.getElementById('gameEndModal').close()
+  Array.from(document.querySelectorAll('.key.greenKey')).forEach((el) => el.classList.remove('greenKey'))
+  Array.from(document.querySelectorAll('.key.yellowKey')).forEach((el) => el.classList.remove('yellowKey'))
+  Array.from(document.querySelectorAll('.key.greyKey')).forEach((el) => el.classList.remove('greyKey'))
 }
 
 function clearBoard() {
