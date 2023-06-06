@@ -104,6 +104,10 @@ function userGuesses() {
     updateBoard(checkGuess(string, target), guessCount)
     guessCount++
     winLossCheck(string, target)
+    if (string == 'PENIS') {
+      document.getElementById('logo1').innerHTML = 'lol'
+      document.getElementById('logo2').innerHTML = 'penis'
+    }
 
     guessString = []
 } else {
@@ -281,6 +285,8 @@ function winStateReached() {
   document.getElementById('backspace').removeEventListener('click', backspacePress)
   gameIsActive = false
   streak++
+  document.getElementById('gameEndModal').showModal()
+  document.getElementById('modalWin').innerHTML = 'YOU WIN!'
 }
 
 function loseStateReached() {
@@ -289,6 +295,8 @@ function loseStateReached() {
   document.getElementById('backspace').removeEventListener('click', backspacePress)
   gameIsActive = false
   streak = 0
+  document.getElementById('gameEndModal').showModal()
+  document.getElementById('modalWin').innerHTML = 'You lose :( the word was ' + target
 }
 
 function resetGame() {
@@ -301,6 +309,7 @@ function resetGame() {
   avgGuessCount = totalGuesses / gameCount
   document.getElementById('streakCounter').innerHTML = streak
   document.getElementById('avgGuessCounter').innerHTML = Math.floor(avgGuessCount*10)/10
+  document.getElementById('gameEndModal').close()
 }
 
 function clearBoard() {
@@ -346,6 +355,7 @@ function keyboardPress(key) {
 }
 
 document.addEventListener('keydown', keyboardPress)
+document.getElementById('gameEndModal').addEventListener('click', resetGame)
 
 function initialise() {
   let target = wordSelector()

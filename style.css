@@ -19,7 +19,7 @@ header {
 }
 
 header div {
-  flex-grow: 1;
+  width: 33.33%;
 }
 
 header div p {
@@ -36,9 +36,8 @@ header div p {
 }
 
 #gameBoard {
-  width: 80%;
-  aspect-ratio: 1 / 1;
-  height: auto;
+  width: 80vw;
+  height: 96vw;
   background-color: #121216;
   filter: drop-shadow(0px 0px 20px #121216);
   display: flex;
@@ -52,12 +51,17 @@ header div p {
     width: 30vw;
     height: 36vw;
     font-size: 60%;
+    margin: 5rem auto;
   }
 
   div .tile {
     max-height: 100%;
-    font-size: 2vw;
-    line-height: 4vw;
+    font-size: 3vw;
+    line-height: 3vw;
+  }
+
+  #keyboardSection {
+    display: none;
   }
 
 }
@@ -140,4 +144,23 @@ header div p {
 
 .key #submitButton {
   width: 90px;
+}
+
+dialog {
+  border-top: 10px solid lightgray;
+  border-bottom: 10px solid lightgray;
+  box-shadow: 3px 3px 25px black;
+  background-color: #121216;
+  width: 100%;
+}
+
+dialog p {
+  font-weight: bold;
+  font-size: 24px;
+  color: lightgray;
+  text-align: center;
+}
+
+dialog p #modalWin {
+  font-size: 50px;
 }
