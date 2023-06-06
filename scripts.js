@@ -1,4 +1,4 @@
-import {wordList} from './utils.js';
+import {wordList, validGuesses} from './utils.js';
 
 
 //node.js import
@@ -9,7 +9,7 @@ import {wordList} from './utils.js';
 const localList = ['brain', 'great', 'booty', 'sewer']
 
 function wordSelector() {
-  return wordList[Math.floor(Math.random() * wordList.length)].word
+  return wordList[Math.floor(Math.random() * wordList.length)]
 }
 
 function getUserGuess() {
@@ -88,7 +88,7 @@ function updateBoard(stateArray, guessNum) {
 
 function guessValidity(string) {
   if (string.length == 5) {
-    if (wordList.some(e => e.word == string)) {
+    if (validGuesses.some(e => e == string)) {
       return true
     } else {
       return 'Not in word list :('
@@ -170,7 +170,7 @@ function stageUpdateBoard(array) {
   document.getElementById(targetRow).querySelector(targetColumn).innerHTML = guessString[guessString.length - 1]
 }
 
-function keyPress() {
+function keyPress(evt) {
   if (gameIsActive) {
     let keyChar = this.innerHTML
     if (guessString.length < 5) {
@@ -178,12 +178,15 @@ function keyPress() {
       stageUpdateBoard(guessString)
     }
   }
+  evt.preventDefault()
+  evt.stopPropagation()
   //remove later
   console.log(guessString)
+
 }
 
 function createKey(key, row) {
-  let newKey = document.createElement('p')
+  let newKey = document.createElement('button')
   newKey.classList.add('key')
   document.getElementById(row).appendChild(newKey)
   newKey.innerHTML = key.toUpperCase()
@@ -205,14 +208,14 @@ function buildKeyboard() {
     createKey(keysRowThree[i], 'keyboardRowThree')
   }
   //make backspace
-  let backspace = document.createElement('p')
+  let backspace = document.createElement('button')
   backspace.classList.add('key')
   backspace.id = 'backspace'
   backspace.innerHTML = '<-'
   document.getElementById('keyboardRowOne').appendChild(backspace)
   backspace.addEventListener('click', backspacePress)
   //make enter
-  let enter = document.createElement('p')
+  let enter = document.createElement('button')
   enter.classList.add('key')
   enter.id = 'submitButton'
   enter.innerHTML = 'ENTER'
@@ -277,7 +280,7 @@ function winStateReached() {
   document.getElementById('gameBoard').style.filter = "drop-shadow(0px 0px 20px green)"
   document.getElementById('backspace').removeEventListener('click', backspacePress)
   gameIsActive = false
-
+  streak++
 }
 
 function loseStateReached() {
@@ -285,13 +288,19 @@ function loseStateReached() {
   document.getElementById('gameBoard').style.filter = "drop-shadow(0px 0px 20px red)"
   document.getElementById('backspace').removeEventListener('click', backspacePress)
   gameIsActive = false
+  streak = 0
 }
 
 function resetGame() {
   target = wordSelector()
+  totalGuesses = guessCount + totalGuesses
   guessCount = 0
   gameIsActive = true
   clearBoard()
+  gameCount++
+  avgGuessCount = totalGuesses / gameCount
+  document.getElementById('streakCounter').innerHTML = streak
+  document.getElementById('avgGuessCounter').innerHTML = Math.floor(avgGuessCount*10)/10
 }
 
 function clearBoard() {
@@ -308,6 +317,10 @@ let target = wordSelector()
 let guessCount = 0
 let guessString = []
 let gameIsActive = false
+let gameCount = 0
+let totalGuesses = 0
+let avgGuessCount = 0
+let streak = 0
 
 function keyboardPress(key) {
   console.log(key.key)
