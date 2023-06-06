@@ -111,10 +111,11 @@ header div p {
 .key {
   min-height: 5rem;
   height: 80%;
-  width: 5rem;
+  width: 8%;
   min-width: fit-content;
   background-color: black;
   border: 5px solid black;
+  filter: drop-shadow(1px 1px 3px white);
   padding: 5px;
   border-radius: 5px;
   margin: 5px;
@@ -125,6 +126,7 @@ header div p {
   font-weight: bold;
   color: linen;
   touch-action: manipulation;
+
 }
 
 .key #submitButton {
