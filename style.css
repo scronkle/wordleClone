@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
 * {
   font-size: 12px;
-  font-family: 'roboto', sans-serif
+  font-family: 'Nunito', sans-serif
 }
 
 body {
@@ -57,7 +59,7 @@ header div p {
   div .tile {
     max-height: 100%;
     font-size: 3vw;
-    line-height: 3vw;
+    line-height: 4vw;
   }
 
   #keyboardSection {
@@ -84,7 +86,7 @@ header div p {
   border: 8px solid lightgray;
   border-radius: 4px;
   font-size: 5rem;
-  font-family: "Roboto";
+  font-family: "Nunito";
   text-align: center;
   font-weight: bold;
   line-height: 10rem;
@@ -102,6 +104,17 @@ header div p {
   #keyboardSection {
     bottom: 10%;
     position: absolute;
+  }
+
+  #gameBoard {
+    max-height: 48vh;
+    max-width: 40vh;
+  }
+
+  .tile {
+    max-height: 100%;
+    font-size: 10vw;
+    line-height: 10vw;
   }
 }
 
@@ -135,7 +148,7 @@ header div p {
   text-align: center;
   line-height: 10rem;
   font-size: 3rem;
-  font-family: 'roboto';
+  font-family: 'Nunito';
   font-weight: bold;
   color: linen;
   touch-action: manipulation;
