@@ -97,11 +97,40 @@ function guessValidity(string) {
     if (validGuesses.some(e => e == string)) {
       return true
     } else {
+      guessString = []
+      clearRow()
       return 'Not in word list :('
     }
   } else {
+    guessString = []
+    clearRow()
     return '5 letters only!'
   }
+}
+
+function clearRow() {
+  let targetRow = ''
+  switch (guessCount) {
+    case 0:
+      targetRow = "lineOne";
+      break;
+    case 1:
+      targetRow = "lineTwo";
+      break;
+    case 2:
+      targetRow = 'lineThree'
+      break;
+    case 3: 
+      targetRow = 'lineFour'
+      break;
+    case 4:
+      targetRow = "lineFive";
+      break;
+    case 5:
+      targetRow = "lineSix";
+      break;
+  }
+  Array.from(document.getElementById(targetRow).getElementsByClassName('tile')).forEach((el) => el.innerHTML = '')
 }
 
 function userGuesses() {
