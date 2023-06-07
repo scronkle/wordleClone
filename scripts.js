@@ -318,7 +318,7 @@ function enterPress() {
 function winStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'green'
   document.getElementById('gameBoard').style.filter = "drop-shadow(0px 0px 20px green)"
-  document.getElementById('backspace').removeEventListener('click', backspacePress)
+
   gameIsActive = false
   streak++
   document.getElementById('gameEndModal').showModal()
@@ -328,7 +328,7 @@ function winStateReached() {
 function loseStateReached() {
   document.getElementById('gameBoard').style.backgroundColor = 'red'
   document.getElementById('gameBoard').style.filter = "drop-shadow(0px 0px 20px red)"
-  document.getElementById('backspace').removeEventListener('click', backspacePress)
+
   gameIsActive = false
   streak = 0
   document.getElementById('gameEndModal').showModal()
